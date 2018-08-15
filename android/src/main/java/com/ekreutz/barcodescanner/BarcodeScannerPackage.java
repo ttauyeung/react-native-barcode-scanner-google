@@ -18,7 +18,7 @@ public class BarcodeScannerPackage implements ReactPackage {
         barcodeScannerManager = new BarcodeScannerManager();
     }
 
-    @Override
+   // @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }
