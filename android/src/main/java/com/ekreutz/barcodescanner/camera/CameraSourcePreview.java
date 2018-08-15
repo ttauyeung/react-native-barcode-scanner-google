@@ -150,15 +150,15 @@ public class CameraSourcePreview extends ViewGroup {
         // --------------------------------
 
         int previewWidth = 800;
-        int previewHeight = 480;
+        int previewHeight = 800;
 
         if (mCameraSource != null) {
             mCameraSource.setRotation();
-            Size size = mCameraSource.getPreviewSize();
-            if (size != null) {
-                previewWidth = size.getWidth();
-                previewHeight = size.getHeight();
-            }
+            // Size size = mCameraSource.getPreviewSize();
+            // if (size != null) {
+            //     previewWidth = size.getWidth();
+            //     previewHeight = size.getHeight();
+            // }
         }
 
         // Swap width and height sizes when in portrait, since it will be rotated 90 degrees
