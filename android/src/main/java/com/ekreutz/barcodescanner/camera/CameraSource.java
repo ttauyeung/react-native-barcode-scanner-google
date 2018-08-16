@@ -139,7 +139,7 @@ public class CameraSource {
     private int mRequestedPreviewHeight = 1024;
 
 
-    private String mFocusMode = Camera.Parameters.FOCUS_MODE_AUTO;
+    private String mFocusMode = Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE;
     private String mFlashMode = Camera.Parameters.FLASH_MODE_OFF;
     private int mCameraId = -1;
 
