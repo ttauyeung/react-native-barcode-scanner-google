@@ -154,11 +154,11 @@ public class CameraSourcePreview extends ViewGroup {
 
         if (mCameraSource != null) {
             mCameraSource.setRotation();
-            // Size size = mCameraSource.getPreviewSize();
-            // if (size != null) {
-            //     previewWidth = size.getWidth();
-            //     previewHeight = size.getHeight();
-            // }
+             Size size = mCameraSource.getPreviewSize();
+             if (size != null) {
+                 previewWidth = size.getWidth();
+                 previewHeight = size.getHeight();
+             }
         }
 
         // Swap width and height sizes when in portrait, since it will be rotated 90 degrees
@@ -168,36 +168,34 @@ public class CameraSourcePreview extends ViewGroup {
             previewHeight = tmp;
         }
 
-        // Step 2. Determine how to scale the stream so that it fits snugly in this view
+        // Step 2. Determine how to scale the stream so that it fits square in this view
         // --------------------------------
 
-        double scaleRatio = Math.min(mWidth / (double) previewWidth, mHeight / (double) previewHeight);
+        int childWidth;
+        int childHeight;
+        int childXOffset = 0;
+        int childYOffset = 0;
 
-        int childLeft = (int) Math.round((mWidth - scaleRatio * previewWidth) / 2) + 1;
-        int childRight = (int) Math.round((mWidth + scaleRatio * previewWidth) / 2) - 1;
-        int childTop = (int) Math.round((mHeight - scaleRatio * previewHeight) / 2) + 1;
-        int childBottom = (int) Math.round((mHeight + scaleRatio * previewHeight) / 2) - 1;
+        float widthRatio = (float) mWidth / (float) previewWidth;
+        float heightRatio =  (float) mHeight / (float) previewHeight;
+
+        if(widthRatio > heightRatio){
+            childWidth = mWidth;
+            childHeight = (int) ((float) previewHeight * widthRatio);
+            childYOffset = (childHeight - mHeight) / 2;
+        }else{
+            childWidth = (int)((float) previewWidth * heightRatio);
+            childHeight = mHeight;
+            childXOffset = (childWidth - mWidth) / 2;
+        }
 
         // apply the layout to the surface
-        for (int i = 0; i < getChildCount(); ++i) {
-            getChildAt(i).layout(childLeft, childTop, childRight, childBottom);
+
+        for (int i=0; i< getChildCount(); ++i) {
+            getChildAt(i).layout(-1 * childXOffset, -1 * childYOffset, childWidth - childXOffset, childHeight - childYOffset);
         }
 
-        // Step 3: Either fill this view, or barely touch the edges
-        // --------------------------------
-
-        float r = 1.0f;
-
-        if (fillMode == FILL_MODE_COVER) {
-            r = Math.max((float) mWidth / (childRight - childLeft), (float) mHeight / (childBottom - childTop));
-        } else if (fillMode == FILL_MODE_FIT) {
-            r = Math.min((float) mWidth / (childRight - childLeft), (float) mHeight / (childBottom - childTop));
-        }
-
-        setScaleX(r);
-        setScaleY(r);
-
-        // Step 4: try starting the stream again (if needed) after our modifications
+        // Step 3: try starting the stream again (if needed) after our modifications
         // --------------------------------
 
         try {

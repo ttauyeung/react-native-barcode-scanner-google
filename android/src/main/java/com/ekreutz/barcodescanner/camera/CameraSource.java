@@ -136,11 +136,11 @@ public class CameraSource {
     // select close, but not exactly the same values for these.
     private float mRequestedFps = 30.0f;
     private int mRequestedPreviewWidth = 1024;
-    private int mRequestedPreviewHeight = 768;
+    private int mRequestedPreviewHeight = 1024;
 
 
-    private String mFocusMode = null;
-    private String mFlashMode = null;
+    private String mFocusMode = Camera.Parameters.FOCUS_MODE_AUTO;
+    private String mFlashMode = Camera.Parameters.FLASH_MODE_OFF;
     private int mCameraId = -1;
 
     // Leave focus mode at null, and set this to have the camera select e good focus mode out of supported ones.
